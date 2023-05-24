@@ -1,26 +1,37 @@
-import { Application, Graphics } from 'pixi.js'
+import { Application, Container, Point } from 'pixi.js'
+import Body from './modules/physics/Body';
 
 	function main() {
 		const app = new Application({
 			view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
 			resolution: window.devicePixelRatio || 1,
 			autoDensity: true,
-			backgroundColor: 0x6495ed,
+			backgroundColor: 0x000000,
 			width: 640,
 			height: 480
 		});
 
-		const origin = {
-			x: app.screen.width / 2,
-			y: app.screen.height / 2
-		};
+		const origin: Point = new Point(app.screen.width / 2, app.screen.height / 2); 
+		const solarSystem: Container = new Container();
+		
+		const sun: Body = new Body({
+			x: 0, y: 0,
+			mass: 1,
+			radius: 25,
+			color: 0xFDEE00
+		});
+		const planet1: Body = new Body({
+			x: 0, y: 0,
+			mass: 0.001,
+			radius: 10,
+			color: 0x0BDA51
+		});
+		sun.addChild(planet1);
+		planet1.position.set(100, 0);
+		solarSystem.addChild(sun);
+		solarSystem.position.set(origin.x, origin.y);
 
-		const graphics: Graphics = new Graphics();
-		graphics.beginFill(0xff0000);
-		graphics.drawCircle(origin.x, origin.y, 50);
-
-
-		app.stage.addChild(graphics);
+		app.stage.addChild(solarSystem);
 	}
 
 window.addEventListener('load', main);
