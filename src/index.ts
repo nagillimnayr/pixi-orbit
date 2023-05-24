@@ -1,4 +1,4 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application, Graphics } from 'pixi.js'
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -9,11 +9,14 @@ const app = new Application({
 	height: 480
 });
 
-const clampy: Sprite = Sprite.from("clampy.png");
+const origin = {
+	x: app.screen.width / 2,
+	y: app.screen.height / 2
+};
 
-clampy.anchor.set(0.5);
+const graphics: Graphics = new Graphics();
+graphics.beginFill(0xff0000);
+graphics.drawCircle(origin.x, origin.y, 50);
 
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
 
-app.stage.addChild(clampy);
+app.stage.addChild(graphics);
