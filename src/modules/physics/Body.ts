@@ -1,9 +1,9 @@
-import { Graphics, IPoint, Point } from "pixi.js";
+import { Graphics, Point } from "pixi.js";
 
 /**
  * 
  */
-class Body extends Graphics {
+export default class Body extends Graphics {
     mass: number;
     radius: number;
     color: number;
@@ -19,7 +19,7 @@ class Body extends Graphics {
         this.y = y;
         this.color = color;
         this.beginFill(color);
-        this.drawCircle(x, y, radius);
+        this.drawCircle(0, 0, radius);
 
         this.velocity = new Point(0, 0);
         this.acceleration = new Point(0, 0);
