@@ -3,7 +3,7 @@ import {
   GRAV_CONST, DIST_MULT, SOLAR_MASS, DAY,
 } from '../utils/constants';
 import '@pixi/math-extras';
-const timeScale = 10;
+const timeScale = 100;
 
 /**
  * 
@@ -39,7 +39,7 @@ export default class Body extends Graphics {
   */
   updatePosition(deltaTime: number) {
       this.position.add(this.velocity.multiplyScalar(deltaTime * DAY * timeScale), this.position);
-    // console.log('position: ', this.position);
+    
   }
 
   /** Updates the velocity of the body based on it's acceleration
@@ -47,12 +47,7 @@ export default class Body extends Graphics {
    * @param {number} deltaTime The time in seconds of the time-step between updates.
    */
   updateVelocity(deltaTime: number) {
-
-		console.log('prototype of "velocity": ', Object.getPrototypeOf(this.velocity));
-		console.log('prototype of "acceleration": ', Object.getPrototypeOf(this.acceleration));
     this.velocity.add(this.acceleration.multiplyScalar(deltaTime * DAY * timeScale), this.velocity);
-      
-    // console.log('velocity: ', this.velocity);
   }
 
   /** Calculates the instantaneous acceleration of the orbiting body
@@ -62,14 +57,10 @@ export default class Body extends Graphics {
    */
   calculateAcceleration({ mass = 0, position = new ObservablePoint(()=>{}, this, 0, 0) }) {
     const diffPos = position.subtract(this.position);
-    // console.log('diffPos:', diffPos);
     const distSquared = diffPos.multiplyScalar(DIST_MULT).magnitudeSquared();
-    // console.log('distSquared: ', distSquared);
     const direction = diffPos.normalize();
-    // console.log('direction: ', direction);
 
     const gravForce = (GRAV_CONST * mass * SOLAR_MASS) / distSquared;
-    // console.log('gravForce: ', gravForce);
 
     this.acceleration = direction.multiplyScalar(gravForce);
     this.acceleration.multiplyScalar(1 / DIST_MULT, this.acceleration);

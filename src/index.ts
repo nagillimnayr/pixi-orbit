@@ -1,5 +1,6 @@
 import { Application, Container, IApplicationOptions, Point, Ticker } from 'pixi.js'
 import Body from './modules/physics/Body';
+import { DIST_MULT, KM_TO_M } from './modules/utils/constants';
 
 function main() {
 	const appOptions : IApplicationOptions = {
@@ -41,7 +42,8 @@ function main() {
 		color: 0x0BDA51
 	});
 	sun.addChild(planet1);
-	planet1.position.set(100, 0);
+	planet1.position.set(149.5, 0);
+	planet1.velocity.set(0, (-30 * KM_TO_M) / DIST_MULT );
 	solarSystem.addChild(sun);
 	solarSystem.position.set(origin.x, origin.y);
 
@@ -52,7 +54,6 @@ function main() {
 		// If root parameter does not exist, return
 		if (!root) { return; }
 
-		console.log('prototype of "root": ', Object.getPrototypeOf(root));
 		const numOfChildren = root.children.length;
 		// Traverse through each child branch
 		for (let i = 0; i < numOfChildren; i++) {
@@ -60,9 +61,6 @@ function main() {
 			
 			// Cast to Body
 			const body = (<Body>child);
-			console.log('prototype of "child": ', Object.getPrototypeOf(child));
-			console.log('prototype of "body": ', Object.getPrototypeOf(body));
-
 
 			// Calculate new acceleration
 			body.calculateAcceleration(root);
