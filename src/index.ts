@@ -47,11 +47,11 @@ function main() {
 
 	// Traverse scene-graph tree depth-first
 	const inOrderTraversal = (root: Body, deltaTime: number) => {
-			// If root parameter does not exist, return
+		// If root parameter does not exist, return
 		if (!root) { return; }
 
 		const numOfChildren = root.children.length;
-		// 
+		// Traverse through each child branch
 		for (let i = 0; i < numOfChildren; i++) {
 			const child = root.getChildAt(i);
 			
@@ -71,11 +71,13 @@ function main() {
 			}
 		}
 	}
+	
 	const animate = (milliseconds: number) => {
 		const seconds = milliseconds * 0.001;
 		
-		// traverse tree to iterate over all of the nodes and update them
-		
+		// traverse tree to iterate over all of the bodies and update them
+		inOrderTraversal(sun, seconds);
+		app.render(); // render the scene
 	};
 	ticker.add(animate);
 
