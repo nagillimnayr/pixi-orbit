@@ -22,6 +22,8 @@ function main() {
 	const app = new Application(appOptions);
 
 	const ticker = Ticker.shared;
+	ticker.autoStart = false;
+	ticker.stop();
 
 	const origin: Point = new Point(app.screen.width / 2, app.screen.height / 2); 
 	const solarSystem: Container = new Container();
@@ -50,6 +52,7 @@ function main() {
 		// If root parameter does not exist, return
 		if (!root) { return; }
 
+		console.log('prototype of "root": ', Object.getPrototypeOf(root));
 		const numOfChildren = root.children.length;
 		// Traverse through each child branch
 		for (let i = 0; i < numOfChildren; i++) {
@@ -57,6 +60,9 @@ function main() {
 			
 			// Cast to Body
 			const body = (<Body>child);
+			console.log('prototype of "child": ', Object.getPrototypeOf(child));
+			console.log('prototype of "body": ', Object.getPrototypeOf(body));
+
 
 			// Calculate new acceleration
 			body.calculateAcceleration(root);
@@ -80,7 +86,7 @@ function main() {
 		app.render(); // render the scene
 	};
 	ticker.add(animate);
-
+	ticker.start();
 }
 
 window.addEventListener('load', main);

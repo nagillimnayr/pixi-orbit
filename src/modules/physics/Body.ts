@@ -17,18 +17,20 @@ export default class Body extends Graphics {
     acceleration: Point;
 
     constructor({ x = 0, y = 0 , mass = 0, radius = 10, color = 0xffffff}) {
-        super();
-        this.mass = mass;
-        this.radius = radius;
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.beginFill(color);
-        this.drawCircle(0, 0, radius);
+      super();
+      this.mass = mass;
+      this.radius = radius;
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.beginFill(color);
+      this.drawCircle(0, 0, radius);
 
-        // Initialize velocity and acceleration
-        this.velocity = new Point(0, 0);
-        this.acceleration = new Point(0, 0);
+      // Initialize velocity and acceleration
+      this.velocity = this.position.clone();
+      this.velocity.set(0, 0);
+      this.acceleration = this.position.clone();
+      this.acceleration.set(0, 0);
     }
      
  /** Updates the position of the body based on it's velocity
@@ -45,7 +47,10 @@ export default class Body extends Graphics {
    * @param {number} deltaTime The time in seconds of the time-step between updates.
    */
   updateVelocity(deltaTime: number) {
-      this.velocity.add(this.acceleration.multiplyScalar(deltaTime * DAY * timeScale), this.velocity);
+
+		console.log('prototype of "velocity": ', Object.getPrototypeOf(this.velocity));
+		console.log('prototype of "acceleration": ', Object.getPrototypeOf(this.acceleration));
+    this.velocity.add(this.acceleration.multiplyScalar(deltaTime * DAY * timeScale), this.velocity);
       
     // console.log('velocity: ', this.velocity);
   }
@@ -53,9 +58,9 @@ export default class Body extends Graphics {
   /** Calculates the instantaneous acceleration of the orbiting body
    *
    * @param {number} mass Mass of the central body.
-   * @param {IPoint} position Position of the central body.
+   * @param {ObservablePoint} position Position of the central body.
    */
-  calculateAcceleration({ mass = 0, position = new Point() }) {
+  calculateAcceleration({ mass = 0, position = new ObservablePoint(()=>{}, this, 0, 0) }) {
     const diffPos = position.subtract(this.position);
     // console.log('diffPos:', diffPos);
     const distSquared = diffPos.multiplyScalar(DIST_MULT).magnitudeSquared();
